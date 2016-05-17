@@ -35,7 +35,7 @@ class PushBlock {
     void unleash(float bX, float bY) {
         _exists = true;
         _x = bX;
-        _y = bY-18;
+        _y = bY;
     }
 
     Boolean exists() {
