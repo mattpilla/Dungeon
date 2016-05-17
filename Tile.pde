@@ -123,7 +123,7 @@ class Tile {
     void interact(String actor, int row, int xDir, int yDir) {
         if (actor == "girl") {
             if (_type == "tile") {
-                switch(_index) {
+                switch (_index) {
                     case '0': //normal floor
                         break;
                     case '1': //wall
@@ -154,7 +154,7 @@ class Tile {
                         break;
                 }
             } else {
-                switch(_index) {
+                switch (_index) {
                     case '0': //no object
                         break;
                     case '1': //mine
@@ -226,7 +226,7 @@ class Tile {
             }
         } else if (actor == "stick") {
             if (_type == "tile") {
-                switch(_index) {
+                switch (_index) {
                     case '1': //wall
                         $stick.withdraw();
                         break;
@@ -247,7 +247,7 @@ class Tile {
                         break;
                 }
             } else {
-                switch(_index) {
+                switch (_index) {
                     case '1': //mine
                         break;
                     case '4': //fire
@@ -265,7 +265,7 @@ class Tile {
             }
         } else if (actor == "block") {
             if (_type == "tile") {
-                switch(_index) {
+                switch (_index) {
                     case '4': //right gravity panel
                         $block.push(1, 0, 3);
                         break;
@@ -284,7 +284,7 @@ class Tile {
                         break;
                 }
             } else {
-                switch(_index) {
+                switch (_index) {
                     case '1': //mine
                         $block.explode();
                         transform('0');
