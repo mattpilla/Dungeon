@@ -10,11 +10,13 @@ class Girl {
     int _rowMapInit = 0, _colMapInit = 0; //saved map location of girl
     float _x, _y; //character position
     float _oSpeed; //original speed
-    float _speed; //controls how fast character moves
+    float _speed = 0; //controls how fast character moves
     String _direction = "down";
     Boolean _moving = false;
     int _frame = -1;
     int _lim;
+    float _accel = 0.2;
+    int _pastXDir, _pastYDir;
 
     Girl(int w, int h, int x, int y, float speed) {
         _width = w;
@@ -22,8 +24,9 @@ class Girl {
         _index = _indexRoom = _indexInit = 2;
         _x = _xRoom = _xInit = x;
         _y = _yRoom = _yInit = y;
-        _speed = _oSpeed = speed;
+        _oSpeed = speed;
         _sprites = $sprites.getGirlSprites();
+        _pastXDir = _pastYDir = 0;
     }
 
     void fall() {
@@ -243,6 +246,11 @@ class Girl {
             if (_index > 4) {
                 _index -= 5;
             }
+            if ((_pastXDir*-1 == xDir && yDir == 0) || (_pastYDir*-1 == yDir && xDir == 0)) {
+                _speed = 0;
+            }
+            _pastXDir = xDir;
+            _pastYDir = yDir;
             if (xDir == 0 && yDir == 0) {
                 _moving = false;
             } else {
@@ -257,7 +265,7 @@ class Girl {
             }
             Tile[][] tBoundsX = $tileMap.getBounds(nextX, _y, _width, _height);
             Tile[][] oBoundsX = $objMap.getBounds(nextX, _y, _width, _height);
-            speedUp(1);
+            speedUp();
             if (xDir != 0) {
                 if (xDir == -1) {
                     switch (_direction.charAt(0)) {
@@ -417,11 +425,15 @@ class Girl {
         }
     }
 
-    /**
-     * changes speed by a percantage
-     */
-    void speedUp(float magnitude) {
-        _speed = magnitude*_oSpeed;
+    void speedUp() {
+        if (!_moving) {
+            _speed = 0;
+        } else {
+            _speed += _accel;
+            if (_speed > _oSpeed) {
+                _speed = _oSpeed;
+            }
+        }
     }
 
     /**

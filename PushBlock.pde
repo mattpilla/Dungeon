@@ -4,7 +4,7 @@
 class PushBlock {
     Boolean _exists = false;
     int _xDir = 0, _yDir = 0;
-    float _bX, _bY;
+    float _x, _y;
     ArrayList<PImage> _images;
     int _frame = 0;
     int _lim;
@@ -22,7 +22,7 @@ class PushBlock {
             return;
         }
         if (fire == true) {
-            $fire.unleash(_bX, _bY);
+            $fire.unleash(_x, _y);
         }
         _frame = 0;
         _exists = false;
@@ -34,8 +34,8 @@ class PushBlock {
 
     void unleash(float bX, float bY) {
         _exists = true;
-        _bX = bX;
-        _bY = bY;
+        _x = bX;
+        _y = bY-18;
     }
 
     Boolean exists() {
@@ -49,40 +49,40 @@ class PushBlock {
 
     void update() {
         if (_exists) {
-            image(_images.get(_frame), _bX, _bY);
-            Tile[][] tBounds = $tileMap.getBounds(_bX, _bY, $tSize, $tSize);
-            Tile[][] oBounds = $objMap.getBounds(_bX, _bY, $tSize, $tSize);
+            image(_images.get(_frame), _x, _y);
+            Tile[][] tBounds = $tileMap.getBounds(_x, _y, $tSize, $tSize);
+            Tile[][] oBounds = $objMap.getBounds(_x, _y, $tSize, $tSize);
             tileCases(tBounds, _xDir, _yDir);
             tileCases(oBounds, _xDir, _yDir);
         }
     }
 
     float x() {
-        return _bX;
+        return _x;
     }
 
     float y() {
-        return _bY;
+        return _y;
     }
 
     void push(int xDir, int yDir, float speed) {
         _xDir = xDir;
         _yDir = yDir;
-        float nextX = _bX;
-        float nextY = _bY;
+        float nextX = _x;
+        float nextY = _y;
         nextX += _xDir*speed;
         nextY += _yDir*speed;
         Tile[][] bounds = $tileMap.getBounds(nextX, nextY, $tSize, $tSize);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 if (bounds[i][j].isBlock()) {
-                    nextX = _bX;
-                    nextY = _bY;
+                    nextX = _x;
+                    nextY = _y;
                 }
             }
         }
-        _bX = nextX;
-        _bY = nextY;
+        _x = nextX;
+        _y = nextY;
     }
 
     Boolean touch(float axis, float axis2, int len) {
@@ -95,7 +95,7 @@ class PushBlock {
 
     Boolean isTouching(float x, float y, int w, int h) {
         if (_exists) {
-            return touch(_bX, x, w) && touch(_bY, y, h);
+            return touch(_x, x, w) && touch(_y, y, h);
         }
         return false;
     }

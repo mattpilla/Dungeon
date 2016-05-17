@@ -54,6 +54,46 @@ class Tile {
         return true;
     }
 
+    Boolean hitbox(int top, int side, int bottom) {
+        if ($girl._y + $girl._height > _tY + top && $girl._y < _tY + $tSize - bottom) {
+            if ($girl._x < _tX && _tX+side < $girl._x + $girl._width) { //left
+                return true;
+            }
+            if ($girl._x+$girl._width > _tX+$tSize && _tX+$tSize-side > $girl._x) { //right
+                return true;
+            }
+        }
+        if ($girl._x + $girl._width > _tX + side && $girl._x < _tX + $tSize - side) {
+            if ($girl._y < _tY && _tY+top < $girl._y + $girl._height) { //up
+                return true;
+            }
+            if ($girl._y+$girl._height > _tY+$tSize && _tY+$tSize-bottom > $girl._y) { //down
+                return true;
+            }
+        }
+        return false;
+    }
+
+    Boolean boxHitbox(int side) {
+        if ($block._y + $tSize > _tY + side && $block._y < _tY + $tSize - side) {
+            if ($block._x < _tX && _tX+side < $block._x + $tSize) { //left
+                return true;
+            }
+            if ($block._x+$tSize > _tX+$tSize && _tX+$tSize-side > $block._x) { //right
+                return true;
+            }
+        }
+        if ($block._x + $tSize > _tX + side && $block._x < _tX + $tSize - side) {
+            if ($block._y < _tY && _tY+side < $block._y + $tSize) { //up
+                return true;
+            }
+            if ($block._y+$tSize > _tY+$tSize && _tY+$tSize-side > $block._y) { //down
+                return true;
+            }
+        }
+        return false;
+    }
+
     void tileManage() {
         if (_type == "tile") {
             if (_index == '0') {
@@ -147,8 +187,10 @@ class Tile {
                     case '9': //magnet block
                         break;
                     case '2': //void
-                        $girl.setPos(_tX, _tY);
-                        $mode = "fall";
+                        if (hitbox(10, 13, 17)) {
+                            $girl.setPos(_tX, _tY);
+                            $mode = "fall";
+                        }
                         break;
                     case '3': //voided block
                         break;
@@ -158,66 +200,84 @@ class Tile {
                     case '0': //no object
                         break;
                     case '1': //mine
-                        $mode = "dead";
+                        if (hitbox(2, 5, 10)) {
+                            $mode = "dead";
+                        }
                         break;
                     case '2': //save point
-                        $zText = "SAVE";
-                        if ($action[0] && $canSave) {
-                            $girl.savePos();
-                            $girl.saveRoomEntry();
+                        if (hitbox(7, 10, 15)) {
+                            $zText = "SAVE";
+                            if ($action[0] && $canSave) {
+                                $girl.savePos();
+                                $girl.saveRoomEntry();
+                            }
                         }
                         break;
                     case '3': //magnet item
-                        $magnet = 1;
-                        $girl.savePos();
-                        $girl.saveRoomEntry();
-                        transform('0');
+                        if (hitbox(4, 7, 12)) {
+                            $magnet = 1;
+                            $girl.savePos();
+                            $girl.saveRoomEntry();
+                            transform('0');
+                        }
                         break;
                     case '4': //fire
-                        $mode = "dead";
+                        if (hitbox(7, 10, 15)) {
+                            $mode = "dead";
+                        }
                         break;
                     case '5': //ice
-                        $mode = "dead";
+                        if (hitbox(2, 5, 10)) {
+                            $mode = "dead";
+                        }
                         break;
                     case '6': //stick item
-                        $nStick = 1;
-                        $girl.savePos();
-                        $girl.saveRoomEntry();
-                        transform('0');
+                        if (hitbox(2, 5, 10)) {
+                            $nStick = 1;
+                            $girl.savePos();
+                            $girl.saveRoomEntry();
+                            transform('0');
+                        }
                         break;
                     case '7': //blue gravity switch
-                        $zText = "SWITCH";
-                        if ($action[0] && $canSwitch) {
-                            $canSwitch = false;
-                            $gSwitch = true;
-                            transform('8');
-                            $girl.savePos();
+                        if (hitbox(2, 5, 10)) {
+                            $zText = "SWITCH";
+                            if ($action[0] && $canSwitch) {
+                                $canSwitch = false;
+                                $gSwitch = true;
+                                transform('8');
+                                $girl.savePos();
+                            }
                         }
                         break;
                     case '8': //red gravity switch
-                        $zText = "SWITCH";
-                        if ($action[0] && $canSwitch) {
-                            $canSwitch = false;
-                            $gSwitch = false;
-                            transform('7');
-                            $girl.savePos();
+                        if (hitbox(2, 5, 10)) {
+                            $zText = "SWITCH";
+                            if ($action[0] && $canSwitch) {
+                                $canSwitch = false;
+                                $gSwitch = false;
+                                transform('7');
+                                $girl.savePos();
+                            }
                         }
                         break;
                     case '9':
-                        $girl.setPos(_tX, _tY);
-                        $mode = "done";
+                        if (hitbox(7, 10, 15)) {
+                            $girl.setPos(_tX, _tY);
+                            $mode = "done";
+                        }
                         break;
                     case 'A': //weak floor
                     case 'B':
                     case 'C':
                     case 'D':
-                        if (millis()/150 != _lim) {
+                        if (hitbox(7, 10, 15) && millis()/150 != _lim) {
                             _lim = millis()/150;
                             transform(++_index);
                         }
                         break;
                     case 'E':
-                        if (millis()/150 != _lim) {
+                        if (hitbox(7, 10, 15) && millis()/150 != _lim) {
                             _lim = millis()/150;
                             transform("tile", '2');
                         }
@@ -279,8 +339,10 @@ class Tile {
                         $block.push(0, -1, 3);
                         break;
                     case '2': //void
-                        $block.withdraw();
-                        transform('3');
+                        if (boxHitbox(17)) {
+                            $block.withdraw();
+                            transform('3');
+                        }
                         break;
                 }
             } else {
