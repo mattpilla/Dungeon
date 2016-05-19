@@ -105,9 +105,9 @@ class Girl {
             $stick.unleash(_index-9, mags[0], mags[1], _x+a, _y+b);
         }
         Tile[][] tBounds = $tileMap.getBounds(_x, _y, _width, _height);
-        tileCases(tBounds, mags[0], mags[1]);
+        tileCases(tBounds);
         Tile[][] oBounds = $objMap.getBounds(_x, _y, _width, _height);
-        tileCases(oBounds, mags[0], mags[1]);
+        tileCases(oBounds);
     }
 
     void magnet() {
@@ -123,10 +123,10 @@ class Girl {
             incY(mags[1]*16);
         } else {
             Tile[][] tBounds = $tileMap.getBounds(_x, _y, _width, _height);
-            tileCases(tBounds, mags[0], mags[1]);
+            tileCases(tBounds);
         }
         Tile[][] oBounds = $objMap.getBounds(_x, _y, _width, _height);
-        tileCases(oBounds, mags[0], mags[1]);
+        tileCases(oBounds);
     }
 
     int[] getMag(int index) {
@@ -294,8 +294,8 @@ class Girl {
                 }
                 _x = checkX(xDir, tBoundsX, nextX);
             }
-            tileCases(tBoundsX, xDir, yDir);
-            tileCases(oBoundsX, xDir, yDir);
+            tileCases(tBoundsX);
+            tileCases(oBoundsX);
             Tile[][] tBoundsY = $tileMap.getBounds(_x, nextY, _width, _height);
             Tile[][] oBoundsY = $objMap.getBounds(_x, nextY, _width, _height);
             if (yDir != 0) {
@@ -328,8 +328,8 @@ class Girl {
                 }
                 _y = checkY(yDir, tBoundsY, nextY);
             }
-            tileCases(tBoundsY, xDir, yDir);
-            tileCases(oBoundsY, xDir, yDir);
+            tileCases(tBoundsY);
+            tileCases(oBoundsY);
         }
     }
 
@@ -410,11 +410,11 @@ class Girl {
     /**
      * handles interacting with tile types
      */
-    void tileCases(Tile[][] bounds, int xDir, int yDir) {
+    void tileCases(Tile[][] bounds) {
         Boolean gravity = false;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                bounds[i][j].interact("girl", i, xDir, yDir);
+                bounds[i][j].interact("girl");
                 if (bounds[i][j].isGravityPanel()) {
                     gravity = true;
                 }

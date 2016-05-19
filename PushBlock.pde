@@ -52,8 +52,8 @@ class PushBlock {
             image(_images.get(_frame), _x, _y);
             Tile[][] tBounds = $tileMap.getBounds(_x, _y, $tSize, $tSize);
             Tile[][] oBounds = $objMap.getBounds(_x, _y, $tSize, $tSize);
-            tileCases(tBounds, _xDir, _yDir);
-            tileCases(oBounds, _xDir, _yDir);
+            tileCases(tBounds);
+            tileCases(oBounds);
         }
     }
 
@@ -103,10 +103,10 @@ class PushBlock {
     /**
      * handles interacting with tile types
      */
-    void tileCases(Tile[][] bounds, int xDir, int yDir) {
+    void tileCases(Tile[][] bounds) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                bounds[i][j].interact("block", i, xDir, yDir);
+                bounds[i][j].interact("block");
             }
         }
     }

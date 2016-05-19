@@ -55,8 +55,8 @@ class Stick {
             }
             Tile[][] tBounds = $tileMap.getBounds(_sX, _sY, getW(), getH());
             Tile[][] oBounds = $objMap.getBounds(_sX, _sY, getW(), getH());
-            tileCases(tBounds, _xDir, _yDir);
-            tileCases(oBounds, _xDir, _yDir);
+            tileCases(tBounds);
+            tileCases(oBounds);
             if ($fire.isTouching(_sX, _sY, getW(), getH())) {
                 if (_index < 4) {
                     _index += 4;
@@ -114,10 +114,10 @@ class Stick {
     /**
      * handles interacting with tile types
      */
-    void tileCases(Tile[][] bounds, int xDir, int yDir) {
+    void tileCases(Tile[][] bounds) {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                bounds[i][j].interact("stick", i, xDir, yDir);
+                bounds[i][j].interact("stick");
             }
         }
     }

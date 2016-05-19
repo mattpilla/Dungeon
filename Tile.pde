@@ -160,7 +160,7 @@ class Tile {
     /**
     * decides action based on type and number
     */
-    void interact(String actor, int row, int xDir, int yDir) {
+    void interact(String actor) {
         if (actor == "girl") {
             if (_type == "tile") {
                 switch (_index) {

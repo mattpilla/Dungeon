@@ -6,7 +6,7 @@ class TileMap {
     Tile[][] _tiles, _tiles2; //2d array of tiles that make up the map
     String _type; //type of map
 
-    TileMap(String type, int total) {
+    TileMap(String type) {
         _type = type;
         _tiles = new Tile[$rows][$cols];
         refresh();

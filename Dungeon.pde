@@ -227,8 +227,7 @@ void keyPressed() {
             $yPriority = -1;
         }
     } else {
-        Character k = key;
-        k = k.toLowerCase(k);
+        char k = Character.toLowerCase(key);
         if (k == 'z') {
             $action[0] = true;
         }
@@ -256,8 +255,7 @@ void keyReleased() {
             $dir[3] = false;
         }
     } else {
-        Character k = key;
-        k = k.toLowerCase(k);
+        char k = Character.toLowerCase(key);
         if (k == 'z') {
             $action[0] = false;
         }
@@ -329,8 +327,8 @@ void restart() {
     $gameTimer = new Timer(); //timer to time game completion
     $deathTimer = new Timer(1); //timer used for death transition
     $block = new PushBlock();
-    $tileMap = new TileMap("tile", 11);
-    $objMap = new TileMap("object", 5);
+    $tileMap = new TileMap("tile");
+    $objMap = new TileMap("object");
     $girl = new Girl(28, 32, $tSize*8, $tSize*10, 3);
     $stick = new Stick();
     $fire = new Fire();
