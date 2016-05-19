@@ -1,8 +1,3 @@
-import ddf.minim.*;
-import ddf.minim.signals.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-
 /**
  *************************************************
  * dungeon, ok
@@ -10,18 +5,23 @@ import ddf.minim.effects.*;
  * Main class
  * might add things to this. not particularly
  * interested in code comment style as opposed to
- * what it has to say so i intentionally make the asteriks
+ * what it has to say so i intentionally make the asterisks
  * not line up
  *****************************************
  */
+
+/**
+ * imports
+ */
+import processing.sound.*;
 
 /**
  * global variables
  * - variables beginning with $ are global variables
  * - variables also ending with _ are instance variables of other classes. easy
  */
-Minim $minim;
-AudioPlayer $player;
+SoundFile $music;
+float $amp; //volume level for music
 Sprites $sprites;
 Boolean[] $dir = new Boolean[4]; //keyboard directions
 int $xPriority, $yPriority; //determines which direction on the axis was done first
@@ -79,8 +79,9 @@ void setup() {
     $tSize = 36; //size of background tiles
     $rows = 12;
     $cols = 16; //amount of rows and columns of background
-    $minim = new Minim(this);
-    $player = $minim.loadFile("sounds/dungeon.mp3");
+    $amp = 0.5;
+    $music = new SoundFile(this, "sounds/dungeon.mp3");
+    $music.amp($amp);
     restart();
     size(576, 504); //sets window size based on map size
     $start = loadImage("images/start.png");
@@ -98,7 +99,7 @@ void draw() {
         textSize(10);
         text("2012\nMatt Pilla\nMusic by Bobby Kevilovski", 20, 455);
         if ($action[0]) {
-            $player.loop();
+            $music.loop();
             $mode = "play";
             $gameTimer.start();
         }
@@ -293,13 +294,12 @@ int yVal() {
 }
 
 void stop() {
-    $minim.stop();
-    $player.close();
+    $music.stop();
     super.stop();
 }
 
 void end() {
-    $minim.stop();
+    $music.stop();
     image($end, 0, 0);
     fill(0, 255, 0);
     text("TIME: "+$time, 36, 474);
@@ -308,7 +308,7 @@ void end() {
 
 void restart() {
     $time = "";
-    $player.pause();
+    $music.stop();
     $rowMap = 0;
     $colMap = 0; //location of tile map
     $frame = 0;
